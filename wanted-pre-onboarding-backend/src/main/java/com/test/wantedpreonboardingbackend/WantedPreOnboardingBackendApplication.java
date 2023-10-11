@@ -9,5 +9,5 @@ public class WantedPreOnboardingBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WantedPreOnboardingBackendApplication.class, args);
 	}
-
+ 
 }
