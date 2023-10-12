@@ -19,7 +19,7 @@ public class member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String member_id;
 
-    @Column(unique = true)
+    @Column(unique = true) 
     private String member_name;
 
     private String member_pass;
