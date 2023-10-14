@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원 가입</title>
+</head>
+<body>
+  <h2>회원 가입</h2>
+
+  <form th:action="@{/company/signup}" method="post">
+      <label for="companyId">회사 ID:</label><br>
+      <input type="text" id="companyId" name="companyId"><br>
+
+      <label for="companyName">회사 이름:</label><br>
+      <input type="text" id="companyName" name="companyName"><br>
+
+      <label for="password">비밀번호:</label><br>
+      <input type="password" id="password" name="password"><br>
+
+      <!-- 기타 다른 필드들도 추가 가능 -->
+
+      <input type=submit value="가입하기">
+  </form> 
+</body>
+</html>
