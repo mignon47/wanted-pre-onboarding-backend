@@ -44,23 +44,19 @@ input[type=submit] {
 </head>
 <body>
 
-<form th:action="@{/company/signup}" method="post" onsubmit="return signupCompleted()">
-      <label for="companyId">회사 ID:</label>
-      <input type="text" id="companyId" name="companyId"><br/><br/>
+<form th:action="@{/member/signup}" method="post" onsubmit="return signupCompleted()">
+      <label for="memberId">회원 ID:</label>
+      <input type="text" id="memberId" name="memberId"><br/><br/>
 
-      <label for="companyPass">비밀번호:</label>
-      <input type="password" id="companyPass" name="companyPass"><br/><br/>
+      <label for="memberPass">비밀번호:</label>
+      <input type="password" id="memberPass" name="memberPass"><br/><br/>
       
-      <label for="companyName">회사 이름:</label>
-      <input type="text" id="companyName" name="companyName"><br/><br/>
+      <label for="memberName">회원 이름:</label>
+      <input type="text" id="memberName" name="memberName"><br/><br/>
       
-      <label for ="companyCountry">나라:</label>
-      <input type ="text"id ="companyCountry"name ="companyCountry"><br/><br/>
+      <label for ="memberPhone">전화번호:</label>
+      <input type ="text"id ="memberPhone"name ="memberPhone"><br/><br/>
       
-       <label for = "companyArea">지역 :</label>
-       <input type = "text" id = "companyArea" name = "companyArea"><br/><br/>
-
-       <!-- 기타 다른 필드들도 추가 가능 -->
 
        <input type = submit value = "가입하기 ">
     </form > 

@@ -12,11 +12,11 @@ import lombok.Setter;
 public class Company {
 
     @Id
-    private Long company_id;
+    private String companyId;
 
-    private String company_pass;
-    private String company_name;
-    private String company_country;
-    private String company_area;
+    private String companyPass;
+    private String companyName;
+    private String companyCountry;
+    private String companyArea;
 
 }
