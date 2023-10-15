@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Company Site</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container py-3">
+
+    <h1>Welcome to Company Site!</h1>
+
+    <!-- 로그인된 회사 ID 출력 -->
+    <p th:text="${memberId} + '님'"></p>
+
+    <!-- 검색바 -->
+    <form method="get" action="/member/search">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="채용공고 검색" name="query">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">검색</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- 채용공고 목록 -->
+    <form method="post" action="/member/job_list">
+        <button type= "submit" class= "btn btn-primary mb-2">채용공고 목록</button >
+     </form >
+
+     <!-- 로그아웃 버튼 -->
+     <form method= "post" action= "/member/logout">
+         <button type= "submit"class = "btn btn-danger mb-2">로그아웃</button >
+      </form >
+
+  </div >
+
+   
+</body >
+</html >

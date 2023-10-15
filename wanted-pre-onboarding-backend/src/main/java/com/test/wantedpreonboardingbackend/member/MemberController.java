@@ -1,5 +1,7 @@
 package com.test.wantedpreonboardingbackend.member;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.test.wantedpreonboardingbackend.company.CompanyController;
+
 import jakarta.servlet.http.HttpSession;
 
 
@@ -15,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/member")
 public class MemberController {
 
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Autowired
 	private MemberRepository memberRepo;
 
@@ -37,14 +42,16 @@ public class MemberController {
     }
     
     @PostMapping("/login")
-    public String login(@RequestParam String memberId, @RequestParam String memberPass, HttpSession session) {
+    public String login(@RequestParam String memberId, @RequestParam String memberPass, HttpSession session, Model model) {
         Member member = memberRepo.findById(memberId).orElse(null);
         
         if (member == null || !member.getMemberPass().equals(memberPass)) {
             return "redirect:/login?error";
         }
         session.setAttribute("memberId", memberId);
-        return "redirect:/";
+        model.addAttribute("memberId", memberId);
+        logger.info("로그인된 회워세션: {}", session.getAttribute("memberId"));
+        return "member_site";
     }
     
     @PostMapping("/logout")
