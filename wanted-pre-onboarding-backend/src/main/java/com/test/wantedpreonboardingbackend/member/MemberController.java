@@ -46,4 +46,10 @@ public class MemberController {
         session.setAttribute("memberId", memberId);
         return "redirect:/";
     }
+    
+    @PostMapping("/logout")
+	public String logout(HttpSession session) {
+	    session.invalidate();
+	    return "redirect:/";
+	}
 }

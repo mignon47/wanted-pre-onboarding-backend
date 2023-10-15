@@ -1,6 +1,8 @@
 package com.test.wantedpreonboardingbackend.company;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/company")
 public class CompanyController {
 
+	private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
 	@Autowired
 	private CompanyRepository companyRepo;
 
@@ -39,7 +42,7 @@ public class CompanyController {
     }
     
     @PostMapping("/login")
-    public String login(@RequestParam String companyId, @RequestParam String companyPass, HttpSession session) {
+    public String login(@RequestParam String companyId, @RequestParam String companyPass, HttpSession session, Model model) {
         Company company = companyRepo.findById(companyId).orElse(null);
         
         if (company == null || !company.getCompanyPass().equals(companyPass)) {
@@ -47,8 +50,16 @@ public class CompanyController {
         }
         
         session.setAttribute("companyId", companyId);
-        return "redirect:/";
+        model.addAttribute("companyId", companyId);
+        logger.info("Saved companyId in session: {}", session.getAttribute("companyId"));
+        return "company_site";
     }
+    
+    @PostMapping("/logout")
+	public String logout(HttpSession session) {
+	    session.invalidate();
+	    return "redirect:/";
+	}
     
 
 }

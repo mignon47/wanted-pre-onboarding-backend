@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Company Site</title>
+</head>
+<body>
+
+<h1>Welcome to Company Site!</h1>
+
+<!-- 로그인된 회사 ID 출력 -->
+<p th:text="${companyId} + '님'"></p>
+
+<!-- 채용공고 등록 -->
+<form method="post" action="/company/job_posting">
+    <input type="submit" value="채용공고 등록"/>
+</form>
+
+<!-- 채용공고 수정 -->
+<form method="post" action="/company/job_posting/edit">
+    <input type="submit" value="채용공고 수정"/>
+</form>
+
+<!-- 채용공고 삭제 -->
+<form method="post" action="/company/job_posting/delete">
+    <input type="submit" value="채용공고 삭제"/>
+</form>
+
+<!-- 로그아웃 버튼 -->
+<form method="post" action="/company/logout">
+    <input type="submit" value="로그아웃"/>
+</form>
+
+</body>
+</html>
