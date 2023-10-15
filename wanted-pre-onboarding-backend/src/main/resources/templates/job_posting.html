@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Job Posting</title>
+</head>
+<body>
+
+<h1>Create a Job Posting</h1>
+
+<form method="post" action="/job/job_posting" th:object="${job}" th:action="@{/job/job_posting}">
+    <p>기업 ID: <input type="text" th:field="*{companyId}" readonly/></p>
+    <p>기업 명: <input type="text" th:field="*{companyName}" readonly/></p>
+    <p>채용 포지션: <input type="text" th:field="*{jobPosition}"/></p>
+    <p>채용 보상금(원): <input type="number" min= "0" step= "10000" th:field = "*{jobRewards}" /></p>
+    <p>채용 내용:<textarea rows = "4" cols = "50" th:field ="*{jobDescription}"></textarea></p>
+    <p>사용기술:<input type ="text" th:field ="*{jobTechnology}"/></p>
+
+     <!-- 제출 버튼 -->
+     <input type ="submit" value ="등록하기"/>
+
+ </form >
+
+ </body>
+ </html>

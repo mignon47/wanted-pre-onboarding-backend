@@ -50,6 +50,7 @@ public class CompanyController {
         }
         
         session.setAttribute("companyId", companyId);
+        session.setAttribute("companyName", company.getCompanyName());
         model.addAttribute("companyId", companyId);
         logger.info("Saved companyId in session: {}", session.getAttribute("companyId"));
         return "company_site";
