@@ -1,13 +1,17 @@
 package com.test.wantedpreonboardingbackend.job;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -22,22 +26,81 @@ public class JobController {
     public String jobPostingForm(Model model, HttpSession session) {
     	Job job = new Job();
 
-        // 세션에서 회사 ID와 이름을 가져옵니다.
         String companyId = (String) session.getAttribute("companyId");
         String companyName = (String) session.getAttribute("companyName");
 
-        // Job 객체에 설정합니다.
         job.setCompanyId(companyId);
         job.setCompanyName(companyName);
 
-        // Model 객체에 추가하여 뷰에서 사용할 수 있게 합니다.
         model.addAttribute("job", job);
-        return "job_posting";  // job_posting.html 페이지 표시
+        return "job_posting";  
     }
     
     @PostMapping("/job_posting")
-    public String jobPostingSubmit(@ModelAttribute("job") Job job) {
+    public String jobPostingSubmit(@ModelAttribute("job") Job job, Model model, HttpSession session) {
     	jobRepository.save(job);
+    	String companyId = (String) session.getAttribute("companyId");
+        model.addAttribute("companyId", companyId);
+        List<Job> jobs = jobRepository.findByCompanyId(companyId);
+        model.addAttribute("jobList", jobs);
     	return "company_site";
     }
+    
+    @GetMapping("/{jobId}")
+    public String getJobDetail(@PathVariable String jobId, Model model) {
+    	Long id = Long.parseLong(jobId);
+        Job job = jobRepository.findById(id).orElse(null);
+        model.addAttribute("job", job);
+        return "job_detail"; 
+    }
+    @GetMapping("/edit/{jobId}")
+    public String editJob(@PathVariable Long jobId, Model model) {
+        Job job = jobRepository.findById(jobId).orElse(null);
+        if (job == null) {
+        } else {
+            model.addAttribute("job", job);
+        }
+        
+        return "job_edit"; 
+    }
+    
+    @PostMapping("/update/{jobId}")
+    public String updateJob(@PathVariable Long jobId, @ModelAttribute Job updatedJob, RedirectAttributes redirectAttrs, HttpSession session) {
+        Job existingJob = jobRepository.findById(jobId).orElse(null);
+        
+        if (existingJob == null) {
+        	session.setAttribute("job", existingJob);
+        } else {
+            existingJob.setCompanyName(updatedJob.getCompanyName());
+            existingJob.setJobPosition(updatedJob.getJobPosition());
+            existingJob.setJobRewards(updatedJob.getJobRewards());
+            existingJob.setJobDescription(updatedJob.getJobDescription());
+            existingJob.setJobTechnology(updatedJob.getJobTechnology());
+
+            jobRepository.save(existingJob);
+
+            redirectAttrs.addFlashAttribute("message", "The job has been successfully updated.");
+        }
+        
+        return "redirect:/job/" + jobId; 
+    }
+
+    @PostMapping("/delete/{jobId}")
+    public String deleteJob(@PathVariable Long jobId, HttpSession session, RedirectAttributes redirectAttrs, Model model) {
+        try {
+            jobRepository.deleteById(jobId);
+            redirectAttrs.addFlashAttribute("message", "Job has been successfully deleted.");
+        } catch (EmptyResultDataAccessException e) {
+            redirectAttrs.addFlashAttribute("errorMessage", "Failed to delete the job. It might not exist.");
+        }
+        
+        
+        String companyId = (String) session.getAttribute("companyId");
+        model.addAttribute("companyId", companyId);
+        List<Job> jobs = jobRepository.findByCompanyId(companyId);
+        model.addAttribute("jobList", jobs);
+        
+        return "company_site";  
+    }
+
 }

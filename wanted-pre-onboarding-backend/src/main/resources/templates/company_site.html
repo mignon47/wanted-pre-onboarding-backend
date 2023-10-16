@@ -2,6 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Company Site</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 10px;
+        }
+
+        td {
+            border-top: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        
+    </style>
 </head>
 <body>
 
@@ -30,5 +53,22 @@
     <input type="submit" value="로그아웃"/>
 </form>
 
+<hr/>
+
+<h2>등록한 채용 공고 목록</h2>
+<table>
+  <thead>
+    <tr>
+      <th>채용 포지션</th>
+    </tr>
+  </thead>
+  <tbody th:each="job:${jobList}">
+    <tr>
+      <td><a th:href="@{'/job/' + ${job.jobId}}" th:text="${job.jobPosition}"></a></td>
+    </tr>
+  </tbody> 
+</table>
+
 </body>
-</html>
+
+</html> 

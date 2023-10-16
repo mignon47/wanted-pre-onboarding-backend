@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Job</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            padding: 10px 20px; 
+        }
+
+        td {
+           padding :10px 20px; 
+           text-align:center; 
+         }
+         
+         input[type=text], textarea, input[type=number]{
+           width :100%; 
+         }
+
+       .submit-button,
+       .cancel-button{
+          text-align:center; 
+          margin-top :20px; 
+       } 
+
+      a{
+          color:#0000FF; 
+          text-decoration:none
+      }
+    </style>
+</head>
+<body>
+
+<h1>Edit Job</h1>
+
+<form th:action="@{'/job/update/' + ${job.jobId}}" th:object="${job}" method="post">
+    <table>
+        <tr><th>회사명:</th><td><input type="text" th:field="*{companyName}" readonly/></td></tr>
+        <tr><th>채용포지션:</th><td><input type="text" th:field="*{jobPosition}"/></td></tr>
+        <tr><th>채용보상금:</th><td><input type="number" th:field="*{jobRewards}"/></td></tr>
+        <tr><th>채용내용:</th><td><textarea th:field="*{jobDescription}"></textarea></td></tr>
+        <tr><th>사용기술:</th><td><input type="text" th:field="*{jobTechnology}"/></td></tr>
+
+    </table>
+
+
+    <div class='submit-button'>
+      	<input type='submit' value='Update'/>
+  	</div>
+
+
+</form>
+
+
+
+</body>
+
+</html> 

@@ -1,6 +1,8 @@
 package com.test.wantedpreonboardingbackend.company;
 
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.test.wantedpreonboardingbackend.job.Job;
+import com.test.wantedpreonboardingbackend.job.JobRepository;
+
 import jakarta.servlet.http.HttpSession;
 
 
@@ -22,6 +27,8 @@ public class CompanyController {
 	private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
 	@Autowired
 	private CompanyRepository companyRepo;
+	@Autowired
+    private JobRepository jobRepository;
 
     private final CompanyService companyService;
 
@@ -52,6 +59,8 @@ public class CompanyController {
         session.setAttribute("companyId", companyId);
         session.setAttribute("companyName", company.getCompanyName());
         model.addAttribute("companyId", companyId);
+        List<Job> jobs = jobRepository.findByCompanyId(companyId);
+        model.addAttribute("jobList", jobs);
         logger.info("Saved companyId in session: {}", session.getAttribute("companyId"));
         return "company_site";
     }
