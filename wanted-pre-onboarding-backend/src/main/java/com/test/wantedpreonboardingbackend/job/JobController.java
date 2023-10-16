@@ -87,12 +87,7 @@ public class JobController {
 
     @PostMapping("/delete/{jobId}")
     public String deleteJob(@PathVariable Long jobId, HttpSession session, RedirectAttributes redirectAttrs, Model model) {
-        try {
-            jobRepository.deleteById(jobId);
-            redirectAttrs.addFlashAttribute("message", "Job has been successfully deleted.");
-        } catch (EmptyResultDataAccessException e) {
-            redirectAttrs.addFlashAttribute("errorMessage", "Failed to delete the job. It might not exist.");
-        }
+        jobRepository.deleteById(jobId);
         
         
         String companyId = (String) session.getAttribute("companyId");
