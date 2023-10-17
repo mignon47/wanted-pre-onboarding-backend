@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.test.wantedpreonboardingbackend.applicant.Applicant;
 import com.test.wantedpreonboardingbackend.company.CompanyController;
 import com.test.wantedpreonboardingbackend.job.Job;
 import com.test.wantedpreonboardingbackend.job.JobRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -82,19 +84,51 @@ public class MemberController {
     }
     
     @GetMapping("/{jobId}")
-    public String getJobDetail(@PathVariable String jobId, Model model) {
-    	Long id = Long.parseLong(jobId);
-        Job job = jobRepository.findById(id).orElse(null);
+    public String getJobDetail(@PathVariable Long jobId, Model model, HttpServletRequest request) {
+        Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("Invalid job Id:" + jobId));
         model.addAttribute("job", job);
-        return "member_job_detail"; 
+
+        // Get the user ID from the session
+        HttpSession session = request.getSession();
+        String memberId = (String) session.getAttribute("memberId");  // Assumes that the member ID is stored in the session as "memberId"
+
+        if(memberId != null){
+            // Find member by memberId
+            Member member = memberRepo.findById(memberId).orElse(null);  // Replace with your method to find a Member
+
+            if (member != null) {
+                // Add an Applicant object to the model with necessary fields set
+                Applicant applicant = new Applicant();
+                applicant.setMemberId(member.getMemberId());  
+                applicant.setMemberName(member.getMemberName()); 
+                applicant.setMemberPhone(member.getMemberPhone());
+                applicant.setJobId(job.getJobId());
+
+                model.addAttribute("applicant", applicant);
+            }
+         }
+
+         return "member_job_detail";  // return view name here
     }
+
     
+    @GetMapping("/search")
+    public String searchJobs(@RequestParam("query") String query, Model model) {
+        List<Job> jobs = jobRepository.findByJobPositionContainingOrCompanyNameContaining(query, query);
+        model.addAttribute("jobList", jobs);  // 'jobs' 대신 'jobList'라는 이름으로 추가
+        return "search_results";
+    }
+
     @GetMapping("/member_site")
-    public String jobPostingSubmit(@ModelAttribute("job") Job job, Model model, HttpSession session) {
-    	jobRepository.save(job);
-    	String memberId = (String) session.getAttribute("memberId");
-        model.addAttribute("memberId", memberId);
-    	return "member_site";
+    public String showBacksite(HttpSession session, Model model) {
+        // Get the user ID from the session
+        String memberId = (String) session.getAttribute("memberId");
+
+        if(memberId != null){
+            model.addAttribute("memberId", memberId);
+         }
+
+         return "member_site";
     }
 
 }

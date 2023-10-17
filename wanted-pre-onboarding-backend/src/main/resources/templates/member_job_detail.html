@@ -60,6 +60,16 @@
 
 </table>
 
+<div class="button-container">
+    <form th:action="@{/applicant/apply}" th:object="${applicant}" method="post">
+        <input type="hidden" th:field="*{memberId}" /> <!-- 사용자 ID를 설정해야 합니다 -->
+        <input type="hidden" th:field="*{memberName}" value="memberName"/> <!-- 사용자 이름을 설정해야 합니다 -->
+        <input type="hidden" th:field="*{memberPhone}" value="memberPhone"/> <!-- 사용자 전화번호를 설정해야 합니다 -->
+        <input type="hidden" th:field="*{jobId}" th:value="${job.jobId}"/>
+        <button type="submit">지원하기</button>
+    </form>
+</div>
+
 </body>
 
 </html> 
