@@ -14,7 +14,7 @@ public class MainController {
 	}
 	@GetMapping("/login")
     public String showLoginForm() {
-        return "login"; // 이 부분은 실제 로그인 폼 뷰의 이름으로 변경해주세요.
+        return "login"; 
     }
 	
 

@@ -64,20 +64,19 @@ input[type=submit] {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $("form").on("submit", function(event) {
-    event.preventDefault();  // 폼 제출 중지
+    event.preventDefault();  
 
-    // 모든 필드가 채워졌는지 확인
     var isAllFilled = true;
     $("input[type=text], input[type=password]").each(function() {
         if ($(this).val() === "") {
             isAllFilled = false;
-            return false;  // each 반복 종료
+            return false;  
         }
     });
 
     if (!isAllFilled) {
         alert("모든 필드를 입력해주세요!");
-        return;  // 함수 실행 종료
+        return;  
     }
 
     $.ajax({
@@ -86,7 +85,7 @@ $("form").on("submit", function(event) {
         data: $(this).serialize(),
         success: function() {
             alert("회원 가입이 완료되었습니다.");
-            window.location.href = "/login";  // 여기에 실제 로그인 페이지 URL 입력
+            window.location.href = "/login";  
         },
         error: function() {
             alert("회원 가입 실패!");

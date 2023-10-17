@@ -73,13 +73,10 @@ public class MemberController {
     
     @PostMapping("/job_list")
     public String showJobList(Model model) {
-        // 데이터베이스에서 모든 채용공고 목록 가져오기
         List<Job> jobs = jobRepository.findAll();
 
-        // 모델에 추가하기
         model.addAttribute("jobList", jobs);
 
-        // 뷰 이름 반환하기
         return "job_list";
     }
     
@@ -88,16 +85,13 @@ public class MemberController {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("Invalid job Id:" + jobId));
         model.addAttribute("job", job);
 
-        // Get the user ID from the session
         HttpSession session = request.getSession();
-        String memberId = (String) session.getAttribute("memberId");  // Assumes that the member ID is stored in the session as "memberId"
+        String memberId = (String) session.getAttribute("memberId"); 
 
         if(memberId != null){
-            // Find member by memberId
-            Member member = memberRepo.findById(memberId).orElse(null);  // Replace with your method to find a Member
+            Member member = memberRepo.findById(memberId).orElse(null);  
 
             if (member != null) {
-                // Add an Applicant object to the model with necessary fields set
                 Applicant applicant = new Applicant();
                 applicant.setMemberId(member.getMemberId());  
                 applicant.setMemberName(member.getMemberName()); 
@@ -107,21 +101,23 @@ public class MemberController {
                 model.addAttribute("applicant", applicant);
             }
          }
+        
+        List<Job> otherJobs = jobRepository.findByCompanyId(job.getCompanyId());  // Replace with your method to find Jobs by company name
+        model.addAttribute("otherJobs", otherJobs);
 
-         return "member_job_detail";  // return view name here
+         return "member_job_detail"; 
     }
 
     
     @GetMapping("/search")
     public String searchJobs(@RequestParam("query") String query, Model model) {
         List<Job> jobs = jobRepository.findByJobPositionContainingOrCompanyNameContaining(query, query);
-        model.addAttribute("jobList", jobs);  // 'jobs' 대신 'jobList'라는 이름으로 추가
+        model.addAttribute("jobList", jobs);  
         return "search_results";
     }
 
     @GetMapping("/member_site")
     public String showBacksite(HttpSession session, Model model) {
-        // Get the user ID from the session
         String memberId = (String) session.getAttribute("memberId");
 
         if(memberId != null){

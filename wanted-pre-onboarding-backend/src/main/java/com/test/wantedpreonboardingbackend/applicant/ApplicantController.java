@@ -30,8 +30,7 @@ public class ApplicantController {
 	    applicantService.save(applicant);
 	    List<Job> jobs = jobRepository.findAll();
 
-        // 모델에 추가하기
         model.addAttribute("jobList", jobs);
-	    return "job_list";  // 지원 후 리다이렉트할 페이지 경로입니다.
+	    return "job_list";  
 	}
 }

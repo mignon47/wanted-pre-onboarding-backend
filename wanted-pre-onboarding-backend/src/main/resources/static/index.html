@@ -8,15 +8,8 @@
 <body>
     <h1>Welcome to our website!</h1>
 
-    <!-- 로그인 페이지로 이동하는 버튼 -->
-    <!-- 로그인되지 않은 경우에만 보이는 버튼 -->
 	<button sec:authorize="isAnonymous()" onclick="location.href='/login'">Login</button> 
 	
-	<!-- 로그인된 경우에만 보이는 버튼 -->
-	<form sec:authorize="isAuthenticated()" method="post" action="/logout">
-	    <input type="submit" value="Logout"/>
-	    <p th:text="'${#httpSession.getAttribute('companyId')}님이 로그인했습니다.'"></p> 
-	</form>
 
 
 </body>

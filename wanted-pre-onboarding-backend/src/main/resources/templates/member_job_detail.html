@@ -70,6 +70,23 @@
     </form>
 </div>
 
+<!-- 돌아가기 버튼 -->
+   <form method= "get" action= "/member/member_site">
+       <button type= "submit"class = "btn btn-primary mb-2">돌아가기</button >
+   </form >
+   
+<h2>이 회사의 다른 공고</h2>
+
+<table>
+<tr><th>채용 포지션</th><th>채용 보상금</th></tr>
+<th:block th:each="otherJob : ${otherJobs}">
+<tr>
+<td><a th:href="@{/member/{id}(id=${otherJob.jobId})}" th:text="${otherJob.jobPosition}"></a></td>
+<td th:text="${otherJob.jobRewards}"></td>
+</tr>
+</th:block>
+</table>
+
 </body>
 
 </html> 
